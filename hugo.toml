@@ -1,0 +1,40 @@
+baseURL = 'https://sdemertzis.github.io/'
+languageCode = 'en-us'
+title = "Stef'Log"
+theme = "PaperMod"
+disableThemeToggle = false
+enableEmoji = true
+
+[params]
+  author = "Stefanos Demertzis"
+  description = "AI engineer. Writing about whatever I find interesting."
+  defaultTheme = "auto"
+  ShowReadingTime = true
+  ShowShareButtons = false
+  ShowPostNavLinks = true
+
+  [params.homeInfoParams]
+    Title = ":wave: Welcome to my Notebook"
+    Content = "Hi, I'm Stefanos, an AI engineer based in Thessaloniki, Greece. This is my notebook — AI, mathematics, science, books, and whatever else I'm thinking about. :thinking:"
+
+[[params.socialIcons]]
+  name = "linkedin"
+  url = "https://linkedin.com/in/demertzis-s"
+
+[[params.socialIcons]]
+  name = "github"
+  url = "https://github.com/sdemertzis"
+
+[[params.socialIcons]]
+  name = "orcid"
+  url = "https://orcid.org/0009-0001-1880-2680"
+
+[menu]
+  [[menu.main]]
+    name = "Posts"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 2
