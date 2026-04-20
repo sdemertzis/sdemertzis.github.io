@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Dempster-Shafer Theory (DST) | Stef&#39;Log</title>
+<meta name="keywords" content="mathematics, probability, uncertainty, AI">
+<meta name="description" content="A self-contained reference document on Dempster-Shafer Theory.">
+<meta name="author" content="Stefanos Demertzis">
+<link rel="canonical" href="http://localhost:1313/posts/dempster-shafer-theory/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.47e51c7d8489b002361bac156ce9a0a8776d08c5462c2cee95801efafdd90d35.css" integrity="sha256-R&#43;UcfYSJsAI2G6wVbOmgqHdtCMVGLCzulYAe&#43;v3ZDTU=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/dempster-shafer-theory/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  });">
+</script>
+
+
+
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Stef&#39;Log (Alt + H)">Stef&#39;Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Dempster-Shafer Theory (DST)
+    </h1>
+    <div class="post-description">
+      A self-contained reference document on Dempster-Shafer Theory.
+    </div>
+    <div class="post-meta"><span title='2026-04-20 00:00:00 +0000 UTC'>April 20, 2026</span>&nbsp;·&nbsp;<span>8 min</span>&nbsp;·&nbsp;<span>Stefanos Demertzis</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="1-the-problem-dst-solves">1. The Problem DST Solves<a hidden class="anchor" aria-hidden="true" href="#1-the-problem-dst-solves">#</a></h2>
+<p>Standard probability theory forces a complete distribution over known outcomes. Given a set of possible states, probabilities must sum to exactly 1, leaving no room to express genuine ignorance. This is known as the <strong>forced choice problem</strong>: even when data is missing or sensors are unreliable, Bayesian inference must commit to a distribution.</p>
+<p><strong>Dempster-Shafer Theory (DST)</strong> resolves this by introducing a third epistemic state alongside belief and disbelief: <strong>explicit ignorance</strong>. A DST agent can formally state &ldquo;I do not know&rdquo; by assigning probability mass to the entire set of possibilities rather than to any individual hypothesis.</p>
+<hr>
+<h2 id="2-core-concepts">2. Core Concepts<a hidden class="anchor" aria-hidden="true" href="#2-core-concepts">#</a></h2>
+<h3 id="21-frame-of-discernment">2.1 Frame of Discernment<a hidden class="anchor" aria-hidden="true" href="#21-frame-of-discernment">#</a></h3>
+<p><strong>Definition 1 (Frame of Discernment).</strong> The <strong>Frame of Discernment</strong> $\Theta$ is a finite set of mutually exclusive and exhaustive hypotheses representing all possible states of the world.</p>
+<p><strong>Example 1.</strong> In an infrastructure monitoring context:
+$$\Theta = \{F, D, C\}$$
+where $F$ = Functional, $D$ = Degraded, $C$ = Critical.</p>
+<hr>
+<h3 id="22-power-set">2.2 Power Set<a hidden class="anchor" aria-hidden="true" href="#22-power-set">#</a></h3>
+<p><strong>Definition 2 (Power Set).</strong> The <strong>power set</strong> $2^\Theta$ is the collection of all subsets of $\Theta$, including the empty set $\emptyset$ and $\Theta$ itself.</p>
+<p>For $\Theta = \{F, D, C\}$, the power set contains $2^{|\Theta|} = 2^3 = 8$ elements:</p>
+<p>$$2^\Theta = \{\emptyset,\ \{F\},\ \{D\},\ \{C\},\ \{F,D\},\ \{F,C\},\ \{D,C\},\ \{F,D,C\}\}$$</p>
+<p>Assigning mass to a subset $A \subsetneq \Theta$ means: <em>&ldquo;The true state is somewhere in $A$, but I cannot identify which element.&rdquo;</em>
+Assigning mass to $\Theta$ itself means: <em>&ldquo;I have no information — complete ignorance.&rdquo;</em></p>
+<hr>
+<h3 id="23-basic-belief-assignment-bba">2.3 Basic Belief Assignment (BBA)<a hidden class="anchor" aria-hidden="true" href="#23-basic-belief-assignment-bba">#</a></h3>
+<p><strong>Definition 3 (Basic Belief Assignment).</strong> A <strong>Basic Belief Assignment (BBA)</strong> is a function
+$$m : 2^\Theta \rightarrow [0,1]$$
+satisfying:
+$$m(\emptyset) = 0 \qquad \text{and} \qquad \sum_{A \subseteq \Theta} m(A) = 1$$
+Each value $m(A)$ is called the <strong>mass</strong> assigned to subset $A$, representing the degree of belief that is committed exactly to $A$ and cannot be distributed further among its subsets.</p>
+<p><strong>Example 2 (Sensor BBA).</strong> A sensor reports the following BBA:
+$$m(\{F\}) = 0.6, \quad m(\{C\}) = 0.1, \quad m(\Theta) = 0.3$$
+Interpretation: 60% confident it is Functional, 10% confident it is Critical, and 30% complete ignorance.</p>
+<p>Compare to Bayesian probability, which would require:
+$$P(F) + P(D) + P(C) = 1$$
+with no capacity to represent the 30% ignorance explicitly.</p>
+<hr>
+<h3 id="24-belief-and-plausibility">2.4 Belief and Plausibility<a hidden class="anchor" aria-hidden="true" href="#24-belief-and-plausibility">#</a></h3>
+<p>From a BBA, two bounding functions are derived for any hypothesis $A \subseteq \Theta$:</p>
+<p><strong>Definition 4 (Belief Function).</strong>
+$$\mathrm{Bel}(A) = \sum_{B \subseteq A,\ B \neq \emptyset} m(B)$$
+The <strong>belief</strong> in $A$ is the total mass committed to all subsets of $A$. It represents the minimum certainty that the true state lies in $A$.</p>
+<p><strong>Definition 5 (Plausibility Function).</strong>
+$$\mathrm{Pl}(A) = \sum_{B \cap A \neq \emptyset} m(B)$$
+The <strong>plausibility</strong> of $A$ is the total mass that does not contradict $A$. It represents the maximum possible belief in $A$.</p>
+<p>The interval $[\mathrm{Bel}(A),\ \mathrm{Pl}(A)]$ is the <strong>uncertainty interval</strong>. A wider interval indicates greater ignorance about $A$.</p>
+<p><strong>Remark.</strong> The following inequality always holds:
+$$\mathrm{Bel}(A) \leq P(A) \leq \mathrm{Pl}(A)$$
+where $P(A)$ is the true (unknown) probability of $A$.</p>
+<p><strong>Example 3.</strong> Given $m(\{F\}) = 0.6$, $m(\Theta) = 0.3$, $m(\{C\}) = 0.1$:
+$$\mathrm{Bel}(\{F\}) = m(\{F\}) = 0.6$$
+$$\mathrm{Pl}(\{F\}) = m(\{F\}) + m(\Theta) = 0.6 + 0.3 = 0.9$$
+Uncertainty interval for $F$: $[0.6,\ 0.9]$.</p>
+<hr>
+<h2 id="3-dempsters-rule-of-combination">3. Dempster&rsquo;s Rule of Combination<a hidden class="anchor" aria-hidden="true" href="#3-dempsters-rule-of-combination">#</a></h2>
+<p>When two <strong>independent</strong> sources provide BBAs $m_1$ and $m_2$ over the same frame $\Theta$, they are fused into a single combined BBA $m_{1,2}$.</p>
+<h3 id="31-the-formula">3.1 The Formula<a hidden class="anchor" aria-hidden="true" href="#31-the-formula">#</a></h3>
+<p><strong>Definition 6 (Dempster&rsquo;s Rule of Combination).</strong>
+$$m_{1,2}(A) = \frac{1}{1 - K} \sum_{\substack{B, C \subseteq \Theta \ B \cap C = A}} m_1(B)\cdot m_2(C), \qquad A \neq \emptyset$$
+where the <strong>conflict factor</strong> $K$ is defined as:
+$$K = \sum_{\substack{B, C \subseteq \Theta \ B \cap C = \emptyset}} m_1(B)\cdot m_2(C)$$</p>
+<p>The factor $\frac{1}{1-K}$ is a normalization constant that discards the conflicting mass and redistributes the remaining belief proportionally. The conflict factor $K$ ranges from 0 (total agreement) to 1 (total contradiction). When $K = 1$, the rule is undefined (division by zero).</p>
+<h3 id="32-worked-example">3.2 Worked Example<a hidden class="anchor" aria-hidden="true" href="#32-worked-example">#</a></h3>
+<p>Two sensors monitor the same infrastructure. $\Theta = \{F, D, C\}$.</p>
+<p><strong>Sensor 1 ($m_1$):</strong>
+$$m_1(\{F\}) = 0.6, \quad m_1(\{C\}) = 0.1, \quad m_1(\Theta) = 0.3$$</p>
+<p><strong>Sensor 2 ($m_2$):</strong>
+$$m_2(\{D\}) = 0.5, \quad m_2(\{F\}) = 0.2, \quad m_2(\Theta) = 0.3$$</p>
+<p><strong>Step 1 — Pairwise products $m_1(B) \cdot m_2(C)$ and their intersections:</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th>$m_2(\{D\})=0.5$</th>
+          <th>$m_2(\{F\})=0.2$</th>
+          <th>$m_2(\Theta)=0.3$</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>$m_1(\{F\})=0.6$</td>
+          <td>$\{F\}\cap\{D\}=\emptyset \to 0.30$</td>
+          <td>$\{F\}\cap\{F\}=\{F\} \to 0.12$</td>
+          <td>$\{F\}\cap\Theta=\{F\} \to 0.18$</td>
+      </tr>
+      <tr>
+          <td>$m_1(\{C\})=0.1$</td>
+          <td>$\{C\}\cap\{D\}=\emptyset \to 0.05$</td>
+          <td>$\{C\}\cap\{F\}=\emptyset \to 0.02$</td>
+          <td>$\{C\}\cap\Theta=\{C\} \to 0.03$</td>
+      </tr>
+      <tr>
+          <td>$m_1(\Theta)=0.3$</td>
+          <td>$\Theta\cap\{D\}=\{D\} \to 0.15$</td>
+          <td>$\Theta\cap\{F\}=\{F\} \to 0.06$</td>
+          <td>$\Theta\cap\Theta=\Theta \to 0.09$</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Step 2 — Conflict factor:</strong>
+$$K = 0.30 + 0.05 + 0.02 = 0.37$$</p>
+<p><strong>Step 3 — Raw masses (sum products sharing the same intersection):</strong>
+$$m(\{F\}) = 0.12 + 0.18 + 0.06 = 0.36$$
+$$m(\{D\}) = 0.15, \qquad m(\{C\}) = 0.03, \qquad m(\Theta) = 0.09$$</p>
+<p><strong>Step 4 — Normalize by $\frac{1}{1-K} = \frac{1}{0.63}$:</strong>
+$$m_{1,2}(\{F\}) = \frac{0.36}{0.63} = 0.571, \quad m_{1,2}(\{D\}) = \frac{0.15}{0.63} = 0.238$$
+$$m_{1,2}(\{C\}) = \frac{0.03}{0.63} = 0.048, \quad m_{1,2}(\Theta) = \frac{0.09}{0.63} = 0.143$$</p>
+<p><strong>Interpretation:</strong> After fusion, the system assigns 57.1% belief to Functional, 23.8% to Degraded, 4.8% to Critical, with 14.3% residual ignorance.</p>
+<hr>
+<h2 id="4-pignistic-transformation">4. Pignistic Transformation<a hidden class="anchor" aria-hidden="true" href="#4-pignistic-transformation">#</a></h2>
+<p>The fused BBA $m_{1,2}$ is not a standard probability distribution and cannot directly drive decisions (e.g., &ldquo;choose the most likely state&rdquo;). The <strong>Pignistic Transformation</strong> converts a BBA into a proper probability distribution by distributing ignorance mass uniformly across hypotheses.</p>
+<p><strong>Definition 7 (Pignistic Probability).</strong>
+$$BetP(\{x\}) = \sum_{\substack{A \subseteq \Theta \ x \in A}} \frac{m(A)}{|A|}, \qquad \forall\ x \in \Theta$$</p>
+<p>The mass of each subset $A$ is split equally among all elements of $A$. The result is a valid probability distribution: $\sum_{x \in \Theta} BetP(\{x\}) = 1$.</p>
+<p><strong>Example 4.</strong> Continuing from the combined BBA above, where $m(\Theta) = 0.143$:
+$$\frac{m(\Theta)}{|\Theta|} = \frac{0.143}{3} = 0.048$$
+$$BetP(\{F\}) = 0.571 + 0.048 = 0.619$$
+$$BetP(\{D\}) = 0.238 + 0.048 = 0.286$$
+$$BetP(\{C\}) = 0.048 + 0.048 = 0.096$$
+Sum $= 1.0$ ✓</p>
+<hr>
+<h2 id="5-zadehs-paradox-and-high-conflict-fusion">5. Zadeh&rsquo;s Paradox and High-Conflict Fusion<a hidden class="anchor" aria-hidden="true" href="#5-zadehs-paradox-and-high-conflict-fusion">#</a></h2>
+<h3 id="51-zadehs-paradox">5.1 Zadeh&rsquo;s Paradox<a hidden class="anchor" aria-hidden="true" href="#51-zadehs-paradox">#</a></h3>
+<p>When two sources are highly confident but mutually contradictory, Dempster&rsquo;s Rule produces counterintuitive results. Consider:</p>
+<p>$$m_1(\{F\}) = 0.99, \quad m_1(\Theta) = 0.01$$
+$$m_2(\{C\}) = 0.99, \quad m_2(\Theta) = 0.01$$</p>
+<p>The conflict factor is $K \approx 0.98$. After normalization:</p>
+<p>$$m_{1,2}(\{F\}) \approx \frac{0.99 \times 0.01}{0.02} = 0.495, \quad m_{1,2}(\{C\}) \approx 0.495, \quad m_{1,2}(\Theta) \approx 0.005$$</p>
+<p>The result assigns near-equal belief to $F$ and $C$ — an essentially uninformative outcome — despite both sensors being highly confident. When $K = 1$ exactly, the formula is undefined (division by zero).</p>
+<p>This is known as <strong>Zadeh&rsquo;s Paradox</strong>: two highly confident, contradictory sources produce a meaningless combined belief.</p>
+<h3 id="52-dsmt-and-proportional-conflict-redistribution">5.2 DSmT and Proportional Conflict Redistribution<a hidden class="anchor" aria-hidden="true" href="#52-dsmt-and-proportional-conflict-redistribution">#</a></h3>
+<p><strong>Dezert-Smarandanche Theory (DSmT)</strong> with <strong>Proportional Conflict Redistribution (PCR)</strong> rules addresses Zadeh&rsquo;s Paradox by redistributing conflicting mass back to the conflicting hypotheses proportionally, rather than discarding it:</p>
+<p>$$m_{\text{PCR}}(A) = m_{1,2}(A) + \sum_{\substack{B \subseteq \Theta \ B \cap A = \emptyset}} \left[ \frac{m_1(A)^2 \cdot m_2(B)}{m_1(A) + m_2(B)} + \frac{m_2(A)^2 \cdot m_1(B)}{m_2(A) + m_1(B)} \right]$$</p>
+<p>In the Zadeh example, PCR returns:</p>
+<p>$$m_{\text{PCR}}(\{F\}) \approx 0.5, \quad m_{\text{PCR}}(\{C\}) \approx 0.5$$</p>
+<p>which is the honest answer: complete uncertainty between two contradictory confident sources.</p>
+<p><strong>Remark.</strong> PCR should be used when $K$ is large (e.g., $K &gt; 0.9$). For moderate conflict ($K &lt; 0.5$), Dempster&rsquo;s Rule is well-behaved and preferred for its simplicity.</p>
+<hr>
+<h2 id="6-open-concerns">6. Open Concerns<a hidden class="anchor" aria-hidden="true" href="#6-open-concerns">#</a></h2>
+<ol>
+<li>
+<p><strong>Combination order with more than two sources.</strong> Dempster&rsquo;s Rule is applied sequentially when combining $n &gt; 2$ sources. While the rule is commutative and associative under low conflict, the order of combination can produce different intermediate results under high conflict. This is unaddressed when many sensors are involved.</p>
+</li>
+<li>
+<p><strong>Switching condition between DST and DSmT.</strong> No formal criterion exists in the literature for when to switch from Dempster&rsquo;s Rule to PCR. A practical threshold on $K$ is commonly used, but its value is a design parameter without formal justification.</p>
+</li>
+<li>
+<p><strong>BetP as a utility proxy.</strong> Using $BetP(C)$ (the pignistic probability of the Critical state) as a utility multiplier is a heuristic choice. Different transformations (e.g., using $\mathrm{Pl}(C)$ or $\mathrm{Bel}(C)$) would produce different utility values and potentially different allocation outcomes. This mapping requires formal justification in any downstream application.</p>
+</li>
+<li>
+<p><strong>Independence assumption.</strong> Dempster&rsquo;s Rule requires sources to be <strong>independent</strong>. In practice, sensors in the same physical environment share common failure modes (e.g., flood damage), which violates this assumption. Dependent combination rules exist but are computationally more demanding.</p>
+</li>
+</ol>
+<hr>
+<h2 id="7-summary">7. Summary<a hidden class="anchor" aria-hidden="true" href="#7-summary">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Concept</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>$\Theta$</td>
+          <td>Frame of Discernment — all possible states</td>
+      </tr>
+      <tr>
+          <td>$2^\Theta$</td>
+          <td>Power set — all subsets of $\Theta$</td>
+      </tr>
+      <tr>
+          <td>$m : 2^\Theta \to [0,1]$</td>
+          <td>Basic Belief Assignment</td>
+      </tr>
+      <tr>
+          <td>$\mathrm{Bel}(A)$</td>
+          <td>Minimum certainty that true state is in $A$</td>
+      </tr>
+      <tr>
+          <td>$\mathrm{Pl}(A)$</td>
+          <td>Maximum possible belief in $A$</td>
+      </tr>
+      <tr>
+          <td>$K$</td>
+          <td>Conflict factor — degree of source disagreement</td>
+      </tr>
+      <tr>
+          <td>Dempster&rsquo;s Rule</td>
+          <td>Fuses two BBAs; normalizes out conflict</td>
+      </tr>
+      <tr>
+          <td>$BetP$</td>
+          <td>Pignistic probability — actionable decision distribution</td>
+      </tr>
+      <tr>
+          <td>Zadeh&rsquo;s Paradox</td>
+          <td>DST breaks down when $K \to 1$</td>
+      </tr>
+      <tr>
+          <td>DSmT / PCR</td>
+          <td>Redistributes conflict rather than discarding it</td>
+      </tr>
+  </tbody>
+</table>
+<table>
+  <thead>
+      <tr>
+          <th>Situation</th>
+          <th>Recommended Approach</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Complete, reliable data</td>
+          <td>Bayesian inference</td>
+      </tr>
+      <tr>
+          <td>Missing or incomplete data</td>
+          <td>DST</td>
+      </tr>
+      <tr>
+          <td>Multiple conflicting sensors ($K &lt; 0.9$)</td>
+          <td>Dempster&rsquo;s Rule</td>
+      </tr>
+      <tr>
+          <td>Near-total source conflict ($K \geq 0.9$)</td>
+          <td>DSmT / PCR</td>
+      </tr>
+      <tr>
+          <td>Decision required</td>
+          <td>$BetP$ after DST fusion</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="references">References<a hidden class="anchor" aria-hidden="true" href="#references">#</a></h2>
+<ol>
+<li>A. P. Dempster, &ldquo;Upper and lower probabilities induced by a multivalued mapping,&rdquo; <em>Annals of Mathematical Statistics</em>, vol. 38, no. 2, pp. 325–339, 1967.</li>
+<li>G. Shafer, <em>A Mathematical Theory of Evidence</em>. Princeton University Press, 1976.</li>
+<li>L. A. Zadeh, &ldquo;Review of a mathematical theory of evidence,&rdquo; <em>AI Magazine</em>, vol. 5, no. 3, pp. 81–83, 1984.</li>
+<li>J. Dezert and F. Smarandanche, &ldquo;On the generation of hyper-power sets for the DSmT,&rdquo; in <em>Proc. Fusion 2003</em>, Cairns, Australia, 2003.</li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/mathematics/">Mathematics</a></li>
+      <li><a href="http://localhost:1313/tags/probability/">Probability</a></li>
+      <li><a href="http://localhost:1313/tags/uncertainty/">Uncertainty</a></li>
+      <li><a href="http://localhost:1313/tags/ai/">AI</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">Stef&#39;Log</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

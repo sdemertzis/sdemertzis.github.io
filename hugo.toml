@@ -12,6 +12,7 @@ enableEmoji = true
   ShowReadingTime = true
   ShowShareButtons = false
   ShowPostNavLinks = true
+  math = true
 
   [params.homeInfoParams]
     Title = ":wave: Welcome to my Notebook"
